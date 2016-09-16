@@ -9,8 +9,8 @@ function rethrow(e) {
 }
 
 export function synchd<R>(scopeKey: Object, fn: () => Promise<R>): Promise<R> {
-  const waitOn = queues.get(scopeKey);
-  const p = waitOn ? waitOn.then(fn, fn) : Promise.resolve().then(fn);
+  const waitOn = queues.get(scopeKey) || Promise.resolve();
+  const p = waitOn.then(fn);
 
   // The Promise stored in the WeakMap shouldn't contain a value.
   queues.set(scopeKey, p.then(noop, noop));
