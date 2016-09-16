@@ -1,6 +1,6 @@
 {
   "name": "synchd",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Make guarded sections of code that won't run concurrently and queue instead",
   "main": "js/index.js",
   "scripts": {
