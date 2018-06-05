@@ -1,7 +1,6 @@
 # synchd
 
-[![Circle CI](https://circleci.com/gh/AgentME/synchd.svg?style=shield)](https://circleci.com/gh/AgentME/synchd)
-[![npm version](https://badge.fury.io/js/synchd.svg)](https://badge.fury.io/js/synchd)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/AgentME/synchd/blob/master/LICENSE.txt) [![npm version](https://img.shields.io/npm/v/synchd.svg?style=flat)](https://www.npmjs.com/package/synchd) [![CircleCI Status](https://circleci.com/gh/AgentME/synchd.svg?style=shield)](https://circleci.com/gh/AgentME/synchd)
 
 This module allows guarded sections of code to be made that execute exclusively
 in the order they're called.
