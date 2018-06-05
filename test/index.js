@@ -180,23 +180,28 @@ describe('synchd', function() {
   });
 
   const unhandledWarningsSupported = semver.satisfies(process.version, '>= 6.6.0');
+  const usesUnhandledRejection = semver.satisfies(process.version, '>= 7.0.0');
 
   (
     unhandledWarningsSupported ? it : xit
   )('uncaught rejections are not handled', function() {
     const spy = sinon.spy();
-    process.on('warning', spy);
+    process.on(usesUnhandledRejection ? 'unhandledRejection' : 'warning', spy);
 
     synchd({}, () => {
       throw 'expected 1';
     });
 
     return delay(10).then(() => {
-      process.removeListener('warning', spy);
+      process.removeListener(usesUnhandledRejection ? 'unhandledRejection' : 'warning', spy);
 
       assert(spy.calledOnce);
       const warning = spy.args[0][0];
-      assert.strictEqual(warning.name, 'UnhandledPromiseRejectionWarning');
+      if (usesUnhandledRejection) {
+        assert.strictEqual(warning, 'expected 1');
+      } else {
+        assert.strictEqual(warning.name, 'UnhandledPromiseRejectionWarning');
+      }
     });
   });
 
@@ -204,7 +209,7 @@ describe('synchd', function() {
     unhandledWarningsSupported ? it : xit
   )('uncaught queued rejections are not handled', function() {
     const spy = sinon.spy();
-    process.on('warning', spy);
+    process.on(usesUnhandledRejection ? 'unhandledRejection' : 'warning', spy);
 
     const o = {};
     synchd(o, () => Promise.reject('expected 2'));
@@ -212,15 +217,21 @@ describe('synchd', function() {
     synchd(o, () => Promise.reject('expected 4'));
 
     return delay(10).then(() => {
-      process.removeListener('warning', spy);
+      process.removeListener(usesUnhandledRejection ? 'unhandledRejection' : 'warning', spy);
 
       assert.strictEqual(spy.callCount, 3);
       const warning1 = spy.args[0][0];
       const warning2 = spy.args[1][0];
       const warning3 = spy.args[2][0];
-      assert.strictEqual(warning1.name, 'UnhandledPromiseRejectionWarning');
-      assert.strictEqual(warning2.name, 'UnhandledPromiseRejectionWarning');
-      assert.strictEqual(warning3.name, 'UnhandledPromiseRejectionWarning');
+      if (usesUnhandledRejection) {
+        assert.strictEqual(warning1, 'expected 2');
+        assert.strictEqual(warning2, 'expected 3');
+        assert.strictEqual(warning3, 'expected 4');
+      } else {
+        assert.strictEqual(warning1.name, 'UnhandledPromiseRejectionWarning');
+        assert.strictEqual(warning2.name, 'UnhandledPromiseRejectionWarning');
+        assert.strictEqual(warning3.name, 'UnhandledPromiseRejectionWarning');
+      }
     });
   });
 });
