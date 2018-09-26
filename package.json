@@ -45,5 +45,10 @@
     "semver": "^5.3.0",
     "sinon": "^6.0.0",
     "typescript": "^3.0.3"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "flow-bin"
+    ]
   }
 }
