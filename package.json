@@ -6,7 +6,7 @@
   "sideEffects": false,
   "scripts": {
     "prepare": "babel -s inline -d js/ src/ && flow-copy-source -v src js",
-    "test": "yarn run lint && flow check && mocha",
+    "test": "yarn run lint && flow check && mocha && tsc",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix"
   },
@@ -43,6 +43,7 @@
     "mocha": "^5.2.0",
     "pdelay": "^2.0.0",
     "semver": "^5.3.0",
-    "sinon": "^6.0.0"
+    "sinon": "^6.0.0",
+    "typescript": "^3.0.3"
   }
 }
