@@ -1,3 +1,7 @@
+## 1.1.0 (2018-09-25)
+
+* Added TypeScript type definitions.
+
 ## 1.0.2 (2016-09-16)
 
 * Fixed repository links in npm package.
