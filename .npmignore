@@ -3,8 +3,10 @@
 /node_modules
 npm-debug.log
 /src
-/test
+/__tests__
+*.test.*
+/test-types
 /yarn.lock
-/flow-libs
+/flow-typed
 /.circleci
 .babelrc

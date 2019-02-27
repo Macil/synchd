@@ -2,14 +2,11 @@
 
 const sinon = require('sinon');
 const assert = require('assert');
-const semver = require('semver');
 import delay from 'pdelay';
 import {synchd, synchdFn} from '../src';
 
 describe('synchd', function() {
   it('queues', function() {
-    this.slow(500);
-
     const spy = sinon.spy();
     const o = {};
 
@@ -47,8 +44,6 @@ describe('synchd', function() {
   });
 
   it('queues when functions throw', function() {
-    this.slow(500);
-
     const spy = sinon.spy();
     const o = {};
 
@@ -88,8 +83,6 @@ describe('synchd', function() {
   });
 
   it('works after queue clears', function() {
-    this.slow(500);
-
     const spy = sinon.spy();
     const o = {};
 
@@ -119,8 +112,6 @@ describe('synchd', function() {
   });
 
   it('does not queue for different scopeKeys', function() {
-    this.slow(500);
-
     const spy = sinon.spy();
 
     synchd({}, () => {
@@ -148,8 +139,6 @@ describe('synchd', function() {
   });
 
   it('handles re-entrance', function() {
-    this.slow(500);
-
     const spy = sinon.spy();
     const o = {};
     let i = 0;
@@ -178,68 +167,10 @@ describe('synchd', function() {
       ]);
     });
   });
-
-  const unhandledWarningsSupported = semver.satisfies(process.version, '>= 6.6.0');
-  const usesUnhandledRejection = semver.satisfies(process.version, '>= 7.0.0');
-
-  (
-    unhandledWarningsSupported ? it : xit
-  )('uncaught rejections are not handled', function() {
-    const spy = sinon.spy();
-    process.on(usesUnhandledRejection ? 'unhandledRejection' : 'warning', spy);
-
-    synchd({}, () => {
-      throw 'expected 1';
-    });
-
-    return delay(10).then(() => {
-      process.removeListener(usesUnhandledRejection ? 'unhandledRejection' : 'warning', spy);
-
-      assert(spy.calledOnce);
-      const warning = spy.args[0][0];
-      if (usesUnhandledRejection) {
-        assert.strictEqual(warning, 'expected 1');
-      } else {
-        assert.strictEqual(warning.name, 'UnhandledPromiseRejectionWarning');
-      }
-    });
-  });
-
-  (
-    unhandledWarningsSupported ? it : xit
-  )('uncaught queued rejections are not handled', function() {
-    const spy = sinon.spy();
-    process.on(usesUnhandledRejection ? 'unhandledRejection' : 'warning', spy);
-
-    const o = {};
-    synchd(o, () => Promise.reject('expected 2'));
-    synchd(o, () => Promise.reject('expected 3'));
-    synchd(o, () => Promise.reject('expected 4'));
-
-    return delay(10).then(() => {
-      process.removeListener(usesUnhandledRejection ? 'unhandledRejection' : 'warning', spy);
-
-      assert.strictEqual(spy.callCount, 3);
-      const warning1 = spy.args[0][0];
-      const warning2 = spy.args[1][0];
-      const warning3 = spy.args[2][0];
-      if (usesUnhandledRejection) {
-        assert.strictEqual(warning1, 'expected 2');
-        assert.strictEqual(warning2, 'expected 3');
-        assert.strictEqual(warning3, 'expected 4');
-      } else {
-        assert.strictEqual(warning1.name, 'UnhandledPromiseRejectionWarning');
-        assert.strictEqual(warning2.name, 'UnhandledPromiseRejectionWarning');
-        assert.strictEqual(warning3.name, 'UnhandledPromiseRejectionWarning');
-      }
-    });
-  });
 });
 
 describe('synchdFn', function() {
   it('works', function() {
-    this.slow(500);
-
     const spy = sinon.spy();
 
     const foobar = synchdFn({}, (x: number, y: string) => {

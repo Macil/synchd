@@ -1,6 +1,6 @@
 // This file isn't executed. Typescript just checks it for type safety.
 
-import {synchd, synchdFn} from '../..';
+import {synchd, synchdFn} from '..';
 
 async function foo() {
   const x: number = await synchd({}, async () => 5);
