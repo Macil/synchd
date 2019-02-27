@@ -43,7 +43,7 @@
     "mocha": "^6.0.0",
     "pdelay": "^2.0.0",
     "semver": "^5.3.0",
-    "sinon": "^6.0.0",
+    "sinon": "^7.2.4",
     "typescript": "^3.0.3"
   },
   "greenkeeper": {
