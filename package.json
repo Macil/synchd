@@ -43,7 +43,7 @@
     "flow-copy-source": "^2.0.0",
     "jest": "^24.1.0",
     "pdelay": "^2.0.0",
-    "sinon": "^7.2.4",
+    "sinon": "^8.0.2",
     "typescript": "^3.0.3"
   },
   "greenkeeper": {
